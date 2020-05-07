@@ -1,2 +1,2 @@
 # polymer-data-provider
-Dataprovider component
+Polymer 2 Data Provider Component
