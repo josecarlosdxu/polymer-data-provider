@@ -1,8 +1,22 @@
 {
   "name": "data-provider",
+  "homepage": "https://github.com/josecarlosdxu/polymer-data-provider",
+  "authors": [
+    "Madrid Pepín <jamd@gft.com>"
+  ],
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"    
   },
-  "private": true
+  "description": "",
+  "main": "cells-generic-dp.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
 }
