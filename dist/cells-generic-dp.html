@@ -1,0 +1,85 @@
+<link rel="import" href="../../polymer/polymer-element.html">
+<dom-module id="cells-generic-dp">
+   <script>
+    class CellsGenericDp extends Polymer.Element {
+
+      static get is() {
+        return "cells-generic-dp";
+      }
+
+      static get properties() {
+        return {
+          host: String,
+          path:String,
+          params: {
+            type: Object,
+            notify: true
+          },         
+          headers: Array,
+          body: String,
+          method: String,
+          _requestURL: {
+            type: String,            
+            computed: '_getURL(host, path, params)'
+            
+          }
+        };
+      }      
+      constructor() {
+        super();
+        this.params = {};
+        this.headers = [['Access-Control-Allow-Origin', '*']];        
+        this.method ='GET'; 
+      }
+      ready() {
+        super.ready();       
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this.generateRequest();        
+      }
+
+      _getURL(host, path, params){
+        const url =  new URL(host + path);        
+        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+        return url;         
+      }      
+
+      _handleResponse(data) {
+        this._eventDispatcher('request-success', data);
+      }
+
+       _handleError(error) { 
+        this._eventDispatcher('request-error', error);
+      }
+
+      generateRequest() { 
+        const url =  this._requestURL; 
+        const myHeaders = new Headers(this.headers);        
+        const myInit = { 
+              method: this.method,
+               headers: myHeaders,
+               mode: 'cors',
+               cache: 'default' 
+        };        
+        const request = new Request(url, myInit);
+        fetch(request)
+        .then(response => response.json())
+        .then(response => this._handleResponse(response) )
+        .catch(error =>  this._handleError(error));
+      } 
+
+     _eventDispatcher(type, data) {
+        this.dispatchEvent(new CustomEvent(type, {
+          detail: {data},
+          bubbles: true,
+          composed: true
+        }));
+        this.isLoaded = true;
+      } 
+    }
+
+    customElements.define(CellsGenericDp.is, CellsGenericDp);
+  </script>
+</dom-module>
